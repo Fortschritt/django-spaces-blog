@@ -1,0 +1,31 @@
+{% load i18n %}
+
+{% if comments %}
+  <ul class="media-list m-b m-t-md">
+  {% for comment in comments %}
+	<li class="media">
+	  <a class="media-left" href="#">
+{#		<img class="media-object img-circle" src="{{ comment.author.profile.avatar }}"> #}
+		<div class="media-object img-profile img-profile-sm" style="background:url({{ comment.author.profile.avatar }});"></div>
+	  </a>
+	  <div class="media-body">
+		<small class="pull-right text-muted">{{ comment.published }}</small>
+		<strong>{{ comment.author }}</strong>
+	{{ comment.comment }}
+	  </div>
+	</li>
+  {% endfor %}
+ </ul>	
+{% endif %}
+<br>
+<h4><a href="#commentForm" data-toggle="collapse" aria-expanded="false">{% trans 'Add Comment' %}</a></h4>
+<div class="collapse" id="commentForm">
+<form method="post" action="{% url 'spaces_blog:create_comment' post.slug %}">
+{% csrf_token %}
+{% for field in comment_form %}
+	{% include 'spaces_blog/includes/form_field.html' %}
+{% endfor %}
+{% include "spaces_notifications/form.html" %}
+<button type="submit" class="btn btn-default">{% trans 'Submit' %}</button>
+</form>
+</div>

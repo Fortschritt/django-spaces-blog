@@ -1,0 +1,33 @@
+{% extends 'spaces_blog/base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<div class="col-lg-10 col-lg-offset-1 col-xl-8 col-xl-offset-2">
+<ul class="list-group media-list media-list-stream">
+	<li class="media list-group-item p-a">
+		<h3 class="clear-before">
+		<a href="{% url 'spaces_blog:detail' post.slug %}" class="pull-right btn btn-default">
+			<span class="icon icon-level-up"></span>
+			<strong>{% trans 'Back to current Version' %}</strong>
+		</a>
+		</h3>
+	<h3>{% trans 'Revision' %} <small class="text-muted">{{ revision.updated }}</small></h3>
+	</li>
+    {% include 'spaces_blog/includes/post.html' %}
+	<li class="media list-group-item p-a">
+		<h3 class="clear-before">
+		<a href="{% url 'spaces_blog:detail' post.slug %}" class="pull-right btn btn-default">
+			<span class="icon icon-level-up"></span>
+			<strong>{% trans 'Back to current Version' %}</strong>
+		</a>
+		</h3>
+	<h3>{% trans 'Revision' %} <small class="text-muted">{{ revision.updated }}</small></h3>
+	</li>
+
+
+</ul>
+</div>
+
+
+{% endblock content %}

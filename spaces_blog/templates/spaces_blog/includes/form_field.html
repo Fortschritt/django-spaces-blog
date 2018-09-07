@@ -1,0 +1,26 @@
+{% load i18n widget_tweaks %}
+
+{% if field.is_hidden %}
+  {{ field }}
+{% else %}
+  <fieldset id="div_{{ field.auto_id }}" class="form-group{% if field.errors %} has-error{% endif %}">
+      {% if field.label %}
+        <label for="{{ field.id_for_label }}" class="control-label {% if field.field.required %}requiredField{% endif%}">
+        {% trans field.label %}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+        </label>
+      {% endif %}
+	  {% if field.field.required %}
+	      {{ field|add_class:"form-control"|attr:"required:required" }}
+	  {% else %}
+		  {{ field|add_class:"form-control" }}
+	  {% endif %}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="help-block"><strong>{{ error }}</strong>
+        {% endfor %}
+      {% endif %}
+      {% if field.help_text %}
+        <p id="hint_{{ field.auto_id }}" class="help-block">{{ field.help_text|safe }}</p>
+      {% endif %}
+  </fieldset>
+{% endif %}

@@ -1,0 +1,69 @@
+{% extends 'spaces_blog/base.html' %}
+
+{% load i18n %}
+
+{%  block content %}
+<div class="col-lg-10 col-lg-offset-1 col-xl-8 col-xl-offset-2">
+<ul class="list-group media-list media-list-stream">
+  <li class="media list-group-item p-a">
+	<div class="media-body">
+	<a href="{% url 'spaces_blog:create' %}" class="btn btn-primary pull-right">
+		<span class="icon icon-new-message">
+		{% trans 'Create New Entry' %}
+	</a>
+	</div>
+  </li>
+  {% for post in post_list %}
+      {% include 'spaces_blog/includes/post.html' %}
+  {% empty %}
+	<li class="media list-group-item p-a">
+	<h2 class="empty"><small class="text-muted">{% trans 'Nothing here yet.' %}</small></h2>
+	</li>
+  {% endfor %}
+</ul>
+
+{# ##### pagination ##### #}
+
+{% if is_paginated %}
+<nav class="text-center">
+  <ul class="pagination pagination-lg">
+	{# ### previous page ### #}
+	{% if page_obj.has_previous %}
+		<li>
+		 <a href="?page={{ page_obj.previous_page_number }}" aria-label="{% trans 'Previous page' %}">
+	        <span aria-hidden="true">«</span>
+    	 </a>
+	    </li>
+	{% else %}
+		<li class="disabled">
+			<span aria-hidden="true">«</span>
+		</li>
+	{% endif %}
+	{# ### list of pages ### #}
+	{% for p in page_obj.paginator.page_range %}
+    <li {% if forloop.counter == page_obj.number %}class="active"{% endif %}><a href="?page={{ forloop.counter }}">{{ p }}</a></li>
+	{% endfor %}
+	{# ### next page ### #}
+	{% if page_obj.has_next %}
+    <li>
+      <a href="?page={{ page_obj.next_page_number }}" aria-label="{% trans 'Next page' %}">
+        <span aria-hidden="true">»</span>
+      </a>
+    </li>
+	{% else %}
+    <li class="disabled">
+        <span aria-hidden="true">»</span>
+    </li>
+	{% endif %}
+
+  </ul>
+</nav>
+{% endif %}{# pagination #}
+
+{# ##### end pagination ##### #}
+
+
+</div>
+
+
+{% endblock %}

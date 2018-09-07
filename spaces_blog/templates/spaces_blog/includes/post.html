@@ -1,0 +1,59 @@
+{% load i18n blog_tags %}
+
+	{% if post.blogpost.deleted %}
+		<li  class="media list-group-item p-a">
+		 <h2>
+			{% trans 'This post has been deleted.' %}
+			<small class="text-muted">{% trans "It can't be edited anymore." %}</small>
+		 </h2>
+		</li>
+	{% endif %}
+	<li class="media list-group-item p-a">
+	  <a class="media-left" href="{% url 'collab_profile:detail' post.author.id %}">
+		<div class="media-object img-profile" style="background:url({{ post.author.profile.avatar }});"></div>
+	  </a>
+	  <div class="media-body">
+		<div class="media-heading">
+		  <small class="pull-right text-muted">{{ post.created }}</small>
+		  <h5>{{ post.author }}</h5>
+		  <div class="post-bg {% if post.image %}img{% endif %}" {% if post.image %}style="background-image:url({{ post.image.image.url }});"{% endif %}>
+		    <div class="post-title">
+			  <div class="caption-bg">
+			{% if not post_list and not revision %}
+				<div class="controls pull-right">
+				<a data-toggle="modal" href="#postHistory" class="btn btn-default m-r" title="{% trans 'View older versions of this post' %}"><span class="icon icon-clock"></span></a>
+				{% if not post.blogpost.deleted %}
+				<a href="{% url 'spaces_blog:detail' post.slug %}" class="btn btn-default m-r" title="{% trans 'Direct link to this post' %}"><span class="icon icon-link"></span></a>
+				<a href="{% url 'spaces_blog:edit' post.slug %}" class="btn btn-default {% disabled_if_not_owner user post space %} m-r" title="{% trans 'Edit this post' %}"><span class="icon icon-edit"></span></a>
+				{% endif %}
+				</div>
+			{% endif %}		
+		        <h2><a href="{% url 'spaces_blog:detail' post.slug %}">{{ post.title }}</a>
+					<small class="text-muted">
+					{% if post_list and post.comment_set.count%}
+						{% blocktrans count counter=post.comment_set.count %}
+								1 comment
+							{% plural %}
+							{{ post.comment_set.count }} comments
+						{% endblocktrans %}
+					{% endif %}
+					</small>
+				<br></h2>
+			  </div>
+		    </div>
+		  </div>
+		</div>
+		{{ post.content_html|safe }}
+		{% if not post_list and not revision %}
+		{% include "spaces_blog/includes/comments.html" %}
+		{% endif %}
+	  </div>
+	</li>
+	{% if post.blogpost.deleted %}
+		<li  class="media list-group-item p-a">
+		 <h2>
+			{% trans 'This post has been deleted.' %}
+			<small class="text-muted">{% trans "It can't be edited anymore." %}</small>
+		 </h2>
+		</li>
+	{% endif %}

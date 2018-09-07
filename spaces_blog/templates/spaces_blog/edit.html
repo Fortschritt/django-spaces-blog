@@ -1,0 +1,56 @@
+{% extends 'spaces_blog/base.html' %}
+{% load i18n sekizai_tags %}
+
+
+
+{% block content %}
+<div class="col-lg-10 col-lg-offset-1 col-xl-8 col-xl-offset-2">
+<div class="panel panel-default">
+<div class="panel-body">
+<form enctype="multipart/form-data" method="POST" id="editForm">
+	{% csrf_token %}
+	{% include "spaces_blog/includes/form_errors.html" %}
+
+	{% for field in form %}
+		{% include "spaces_blog/includes/form_field.html" %}
+	{% endfor %}
+
+	{{ formset.management_form }}
+    {% for image_form in formset %}
+		<fieldset class="form-group">
+        {{ image_form }}
+		</fieldset>
+    {% endfor %}
+
+	{% include "spaces_notifications/form.html" %}
+
+	<button type="submit" name="save_changes" class="btn btn-primary">
+          <span class="icon icon-save"></span>
+          {% trans "Save entry" %}
+    </button>
+
+	<a href="{% url 'spaces_blog:index' %}" class="btn btn-default">
+		<span class="icon icon-level-up"></span>
+		{% trans 'Cancel' %}
+	</a>
+
+	<a href="{% url 'spaces_blog:delete' post.slug %}" class="pull-right btn btn-danger">
+		<span class="icon icon-trash"></span>
+		{% trans 'Delete' %}
+	</a>
+
+</form>
+</div>
+</div>
+</div>
+
+{% addtoblock 'js' %}
+{{ form.media.js }}
+{% endaddtoblock %}
+
+{% addtoblock 'css' %}
+{{ form.media.css }}
+{% endaddtoblock %}
+
+
+{% endblock content %}
