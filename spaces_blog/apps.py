@@ -1,5 +1,8 @@
 from django.apps import AppConfig
+from django.db.models.signals import post_migrate
 from collab.util import db_table_exists
+
+from spaces_blog.signals import create_notice_types
 
 class SpacesBlogConfig(AppConfig):
     name = 'spaces_blog'
@@ -16,6 +19,7 @@ class SpacesBlogConfig(AppConfig):
         registry.register(BlogPost)
 
         # register a custom notification
+        """
         from spaces_notifications.utils import register_notification
         from django.utils.translation import ugettext_noop as _
         register_notification(
@@ -32,4 +36,6 @@ class SpacesBlogConfig(AppConfig):
             'spaces_blog_comment',
             _('A blog post has been commented on.'),
             _('A blog post has been commented on.')
-        )        
+        )
+        """
+        post_migrate.connect(create_notice_types, sender=self)
