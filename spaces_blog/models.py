@@ -1,12 +1,16 @@
 import time
-from django.db import models
+
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
 from pinax.blog.models import Post
-from spaces.models import Space,SpacePluginRegistry, SpacePlugin, SpaceModel
 from private_media.storages import PrivateMediaStorage
+
+from spaces.models import Space,SpacePluginRegistry, SpacePlugin, SpaceModel
+
 
 def file_upload_path(instance, filename):
     space = instance.post.blogpost.blog.space.slug
