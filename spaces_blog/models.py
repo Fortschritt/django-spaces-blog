@@ -19,7 +19,7 @@ class Image(models.Model):
     Image class to replace pinax.blog.models.Image as that stores images publicly.
     """
     image = models.FileField(upload_to=file_upload_path, storage=PrivateMediaStorage(), verbose_name=_('Image'))
-    post = models.OneToOneField(Post)
+    post = models.OneToOneField(Post, on_delete=models.CASCADE)
 
 
 class SpacesBlog(SpacePlugin):
@@ -34,8 +34,8 @@ class SpacesBlog(SpacePlugin):
 
 
 class BlogPost(SpaceModel):
-    post = models.OneToOneField(Post)
-    blog = models.ForeignKey(SpacesBlog)
+    post = models.OneToOneField(Post, on_delete=models.CASCADE)
+    blog = models.ForeignKey(SpacesBlog, on_delete=models.CASCADE)
 
 
     spaceplugin_field_name = "blog"
@@ -65,10 +65,10 @@ class BlogPlugin(SpacePluginRegistry):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.TextField(verbose_name=_('Comment'))
     published = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 # pinax.blog unfortunately doesn't register its field names for translation,

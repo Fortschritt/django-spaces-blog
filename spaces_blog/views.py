@@ -12,7 +12,7 @@ from django.views.generic import DetailView, UpdateView
 from django.views.generic.edit import FormView, DeleteView, FormMixin
 from actstream.signals import action as actstream_action
 from pinax.blog.views import BlogIndexView
-from pinax.blog.models import Post,Revision,Section
+from pinax.blog.models import Blog,Post,Revision,Section
 from pinax.blog.parsers.markdown_parser import parse as md_parse
 from collab.decorators import permission_required_or_403
 from collab.mixins import SpacesMixin
@@ -108,6 +108,7 @@ class Create(NotificationMixin, ContextMixin, SpacesMixin, FormView):
         state = Post.STATE_CHOICES[-1][0] # = the index of "Published"
         section = Section.objects.all().first()
         self.new_post = Post.objects.create(
+            blog=Blog.objects.all().first(),
             author=author,
             description=description,
             title=title,

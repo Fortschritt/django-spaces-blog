@@ -9,9 +9,11 @@ class SpacesBlogConfig(AppConfig):
 
     def ready(self):
         # sections are mandatory in pinax-blog, but we don't need one
-        from pinax.blog.models import Section
+        from pinax.blog.models import Blog, Section
         if db_table_exists('blog_section'):
             section = Section.objects.get_or_create(name='Blog', slug='blog')
+        if db_table_exists('blog_blog'):
+            blog = Blog.objects.get_or_create()
 
         # activate activity streams for BlogPost
         from actstream import registry
