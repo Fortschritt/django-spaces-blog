@@ -23,14 +23,17 @@ except ImportError:
 
 class CreateForm(AdminPostForm):
     slug = None
-    teaser = None
     description = None
     content = forms.CharField(
         widget=CKEditorWidget()
     )
 
     def __init__(self, *args, **kwargs):
+        # we don't actually use the following fields, but pinax blog assumes its presence
+        self.fields = {}
+        self.fields["teaser"] = forms.CharField(widget=forms.Textarea())
         super(AdminPostForm, self).__init__(*args, **kwargs)
+        self.fields.pop("teaser")
 
         post = self.instance
 

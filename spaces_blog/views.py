@@ -1,19 +1,21 @@
 import itertools
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, UpdateView
 from django.views.generic.edit import FormView, DeleteView, FormMixin
+
 from actstream.signals import action as actstream_action
 from pinax.blog.views import BlogIndexView
 from pinax.blog.models import Blog,Post,Revision,Section
 from pinax.blog.parsers.markdown_parser import parse as md_parse
+
 from collab.decorators import permission_required_or_403
 from collab.mixins import SpacesMixin
 from spaces_notifications.mixins import NotificationMixin
@@ -186,7 +188,7 @@ class Edit(NotificationMixin, ContextMixin, PostPermissionMixin, UpdateView):
             target=self.request.SPACE,
             action_object=self.object.blogpost
         )
-        return self.get_success_url()
+        return redirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
         context = super(Edit, self).get_context_data(**kwargs)
@@ -198,7 +200,7 @@ class Edit(NotificationMixin, ContextMixin, PostPermissionMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return redirect('spaces_blog:detail', self.object.slug)
+        return reverse_lazy('spaces_blog:detail', kwargs={"post_slug":self.object.slug})
 
 
 class NotReallyDelete(ContextMixin, PostPermissionMixin, SuccessMessageMixin, DeleteView):
@@ -259,10 +261,9 @@ class CreateComment(NotificationMixin, ContextMixin, SpacesPostMixin, SuccessMes
         self.notification_object_link = self.object.blogpost.get_absolute_url()
         self.send_notification()
 
-        url = self.get_success_url()
-        return url
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
-        return redirect('spaces_blog:detail', self.object.slug)
+        return reverse_lazy('spaces_blog:detail', kwargs={"post_slug":self.object.slug})
 
         

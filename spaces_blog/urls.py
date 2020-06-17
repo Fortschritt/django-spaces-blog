@@ -3,7 +3,7 @@ from spaces.urls import space_patterns
 from .views import Create, Index, Detail, Edit, NotReallyDelete, History, CreateComment
 
 app_name = 'spaces_blog'
-urlpatterns = space_patterns(
+urlpatterns = (
 
     url(r'^blog/$', Index.as_view(), name='index'),
     url(r'^blog/create/$', Create.as_view(), name='create'),
