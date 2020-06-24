@@ -5,6 +5,16 @@
 {% block content %}
 <div class="col-lg-10 col-lg-offset-1 col-xl-8 col-xl-offset-2">
 <ul class="list-group media-list media-list-stream">
+  <li class="media list-group-item p-a">
+    <div class="media-body">
+    <a href="{% url 'spaces_blog:index' %}" class="">
+        <span class="icon icon-level-up">
+        {% trans 'Back to overview' %}
+    </a>
+    </div>
+  </li>
+
+
 	{% include 'spaces_blog/includes/post.html' %}
 </ul>
 </div>
